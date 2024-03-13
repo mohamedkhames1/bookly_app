@@ -1,22 +1,27 @@
+import 'package:booklyapp/core/widget/custom_error.dart';
 import 'package:flutter/material.dart';
-import '../../../../../core/utlis/assets.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FutureListViewItems extends StatelessWidget {
   const FutureListViewItems({
     super.key,
+    required this.imageUrl,
   });
+
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 2.7 / 4,
-      child: Container(
-        margin: const EdgeInsets.only(right: 15,),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.red,
-          image: const DecorationImage(
-              image: AssetImage(AssetsData.testImage), fit: BoxFit.fill),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: AspectRatio(
+        aspectRatio: 2.7 / 4,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          fit: BoxFit.fill,
+          errorWidget: (context, string, object){
+            return const CustomError(errMessage: 'errMessage');
+          },
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:booklyapp/features/home/data/models/book_model/book_model.dart';
 import 'package:booklyapp/features/home/presentation/view/%20widgets/boolratig.dart';
 import 'package:booklyapp/features/home/presentation/view/%20widgets/futurbookslistview.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +10,8 @@ import 'bookaction.dart';
 import 'custom_book_details_appBar.dart';
 
 class BookDetailsViewBody extends StatelessWidget {
-  const BookDetailsViewBody({super.key});
+  const BookDetailsViewBody({super.key, required this.bookModel});
+ final BookModel bookModel;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +26,16 @@ class BookDetailsViewBody extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width * .2020),
-            child: const FutureListViewItems(),
+            child:  FutureListViewItems(imageUrl: bookModel.volumeInfo.imageLinks?.thumbnail??'',),
           ),
           const SizedBox(
             height: 30,
           ),
           Center(
             child: Text(
-              'The Jungle Book',
+              bookModel.volumeInfo.title!,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
               style: Styles.textStyle30,
             ),
           ),
@@ -39,11 +43,11 @@ class BookDetailsViewBody extends StatelessWidget {
             child: Opacity(
                 opacity: .7,
                 child: Text(
-                  'Rudyard Kipling',
+                  bookModel.volumeInfo.authors![0]??'',
                   style: Styles.textStyle20,
                 )),
           ),
-          const BookRating(),
+           BookRating(rating: bookModel.volumeInfo.averageRating??0, count: bookModel.volumeInfo.ratingsCount??0,),
           const SizedBox(height: 10,),
           const BookAction(),
           const SizedBox(height:40 ,),
